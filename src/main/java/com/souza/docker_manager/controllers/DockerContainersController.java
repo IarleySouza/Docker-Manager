@@ -1,6 +1,5 @@
 package com.souza.docker_manager.controllers;
 
-import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.model.Container;
 import com.souza.docker_manager.service.DockerService;
 import lombok.extern.slf4j.Slf4j;
