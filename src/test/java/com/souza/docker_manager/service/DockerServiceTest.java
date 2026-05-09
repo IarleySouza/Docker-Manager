@@ -3,6 +3,7 @@ package com.souza.docker_manager.service;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.*;
 import com.github.dockerjava.api.model.Container;
+import com.github.dockerjava.api.model.Image;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -161,4 +162,41 @@ class DockerServiceTest {
         verify(dockerClient.createContainerCmd(containerId)).exec();
     }
 
+    @Test
+    @DisplayName("Deve listar imagens do container")
+    public void testListImages() {
+        // Arrange
+        List<Image> mockImages = Collections.emptyList();
+        when(dockerClient.listImagesCmd()).thenReturn(listImagesCmd);
+        when(listImagesCmd.withShowAll(false)).thenReturn(listImagesCmd);
+        when(listImagesCmd.exec()).thenReturn(mockImages);
+
+        // Act
+        List<Image> result = dockerService.listImages();
+
+        // Assert
+        assertEquals(mockImages, result);
+        verify(dockerClient).listImagesCmd();
+        verify(dockerClient.listImagesCmd()).exec();
+    }
+
+    @Test
+    @DisplayName("Deve filtrar imagens do container")
+    public void testFilterImages() {
+        // Arrange
+        String filterName = "test-image";
+        List<Image> mockImages = Collections.emptyList();
+        when(dockerClient.listImagesCmd()).thenReturn(listImagesCmd);
+        when(listImagesCmd.withImageNameFilter(filterName)).thenReturn(listImagesCmd);
+        when(listImagesCmd.exec()).thenReturn(mockImages);
+
+        // Act
+        List<Image> result = dockerService.filterImages(filterName);
+
+        // Assert
+        assertEquals(mockImages, result);
+        verify(dockerClient).listImagesCmd();
+        verify(listImagesCmd).withImageNameFilter(filterName);
+        verify(listImagesCmd).exec();
+    }
 }
