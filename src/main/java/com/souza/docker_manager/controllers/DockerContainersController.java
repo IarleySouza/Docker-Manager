@@ -23,10 +23,9 @@ public class DockerContainersController {
     }
 
     @GetMapping
-    public List<Container> listContainers(@RequestParam(required = false) Boolean all) {
-        log.info("Listing containers with all={}", all.toString());
+    public List<Container> listContainers(@RequestParam(required = false, defaultValue = "true") boolean all) {
+        log.info("Listing containers: {}", all);
         return dockerService.listContainers(all);
-
     }
 
     @PostMapping(value = "/{id}/start")
