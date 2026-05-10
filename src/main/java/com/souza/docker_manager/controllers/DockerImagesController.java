@@ -23,6 +23,7 @@ public class DockerImagesController {
     public List<Image> listImages() {
         return dockerService.listImages();
     }
+
     @GetMapping(value = "/filter")
     public List<Image> listImages(@RequestParam(required = false, defaultValue = "image-") String filterName) {
         return dockerService.filterImages(filterName);
